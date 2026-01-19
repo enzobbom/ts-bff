@@ -1,8 +1,12 @@
 package com.javanauta.ts.bff.infrastructure.client;
 
-import com.javanauta.ts.bff.business.dto.AddressDTO;
-import com.javanauta.ts.bff.business.dto.PhoneDTO;
-import com.javanauta.ts.bff.business.dto.UserDTO;
+import com.javanauta.ts.bff.business.dto.in.AddressDTORequest;
+import com.javanauta.ts.bff.business.dto.in.PhoneDTORequest;
+import com.javanauta.ts.bff.business.dto.in.UserDTORequest;
+import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
+import com.javanauta.ts.bff.business.dto.out.AddressDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.PhoneDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,29 +14,29 @@ import org.springframework.web.bind.annotation.*;
 public interface UserClient {
 
     @PostMapping
-    UserDTO saveUser(@RequestBody UserDTO userDTO);
+    UserDTOResponse saveUser(@RequestBody UserDTORequest userDTORequest);
 
     @PostMapping("/login")
-    String login(@RequestBody UserDTO userDTO);
+    String login(@RequestBody UserLoginRequestDTO userLoginRequestDTO);
 
     @GetMapping
-    UserDTO getUserByEmail(@RequestParam("email") String email, @RequestHeader("Authorization") String token);
+    UserDTOResponse getUserByEmail(@RequestParam("email") String email, @RequestHeader("Authorization") String token);
 
     @DeleteMapping("/{email}")
     void deleteUserByEmail(@PathVariable String email, @RequestHeader("Authorization") String token);
 
     @PutMapping
-    UserDTO updateUser(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token);
+    UserDTOResponse updateUser(@RequestBody UserDTORequest userDTORequest, @RequestHeader("Authorization") String token);
 
     @PutMapping("/address")
-    AddressDTO updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id, @RequestHeader("Authorization") String token);
+    AddressDTOResponse updateAddress(@RequestBody AddressDTORequest addressDTORequest, @RequestParam("id") Long id, @RequestHeader("Authorization") String token);
 
     @PutMapping("/phone")
-    PhoneDTO updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id, @RequestHeader("Authorization") String token);
+    PhoneDTOResponse updatePhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestParam("id") Long id, @RequestHeader("Authorization") String token);
 
     @PostMapping("/address")
-    AddressDTO addAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String token);
+    AddressDTOResponse addAddress(@RequestBody AddressDTORequest addressDTORequest, @RequestHeader("Authorization") String token);
 
     @PostMapping("/phone")
-    PhoneDTO addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token);
+    PhoneDTOResponse addPhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestHeader("Authorization") String token);
 }

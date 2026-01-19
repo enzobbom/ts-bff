@@ -1,4 +1,4 @@
-package com.javanauta.ts.bff.business.dto;
+package com.javanauta.ts.bff.business.dto.out;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PhoneDTO {
+public class PhoneDTOResponse {
 
     private Long id;
     private String countryCode;

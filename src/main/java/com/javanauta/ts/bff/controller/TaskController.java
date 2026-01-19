@@ -1,7 +1,8 @@
 package com.javanauta.ts.bff.controller;
 
 import com.javanauta.ts.bff.business.TaskService;
-import com.javanauta.ts.bff.business.dto.TaskDTO;
+import com.javanauta.ts.bff.business.dto.in.TaskDTORequest;
+import com.javanauta.ts.bff.business.dto.out.TaskDTOResponse;
 import com.javanauta.ts.bff.business.enums.NotificationStatusEnum;
 import com.javanauta.ts.bff.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,15 +30,15 @@ public class TaskController {
     @Operation(summary = "Create task", description = "Creates a new task")
     @ApiResponse(responseCode = "200", description = "Task successfully created")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<TaskDTO> saveTask(@RequestBody TaskDTO taskDTO, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(taskService.saveTask(token, taskDTO));
+    public ResponseEntity<TaskDTOResponse> saveTask(@RequestBody TaskDTORequest taskDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(taskService.saveTask(token, taskDTORequest));
     }
 
     @GetMapping("/events")
     @Operation(summary = "Get tasks by time period", description = "Gets tasks within a specific date and time period")
     @ApiResponse(responseCode = "200", description = "Tasks successfully found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<List<TaskDTO>> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finalDateTime, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<List<TaskDTOResponse>> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finalDateTime, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.findTaskByTimePeriod(initialDateTime, finalDateTime, token));
     }
 
@@ -46,7 +47,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Tasks successfully found")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<List<TaskDTO>> findTaskListByUserEmail(@RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<List<TaskDTOResponse>> findTaskListByUserEmail(@RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.findTaskByUserEmail(token));
     }
 
@@ -65,7 +66,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Task status successfully modified")
     @ApiResponse(responseCode = "404", description = "Task not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<TaskDTO> modifyTaskStatusById(@RequestParam("status") NotificationStatusEnum notificationStatusEnum, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<TaskDTOResponse> modifyTaskStatusById(@RequestParam("status") NotificationStatusEnum notificationStatusEnum, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.modifyTaskStatusById(notificationStatusEnum, id, token));
     }
 
@@ -74,7 +75,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Task successfully updated")
     @ApiResponse(responseCode = "404", description = "Task not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<TaskDTO> updateTaskById(@RequestBody TaskDTO taskDTO, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(taskService.updateTaskById(taskDTO, id, token));
+    public ResponseEntity<TaskDTOResponse> updateTaskById(@RequestBody TaskDTORequest taskDTORequest, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(taskService.updateTaskById(taskDTORequest, id, token));
     }
 }

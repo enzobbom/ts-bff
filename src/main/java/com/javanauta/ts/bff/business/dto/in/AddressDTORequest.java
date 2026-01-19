@@ -1,4 +1,4 @@
-package com.javanauta.ts.bff.business.dto;
+package com.javanauta.ts.bff.business.dto.in;
 
 import lombok.*;
 
@@ -7,9 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddressDTO {
+public class AddressDTORequest {
 
-    private Long id;
     private String street;
     private Long number;
     private String complement;

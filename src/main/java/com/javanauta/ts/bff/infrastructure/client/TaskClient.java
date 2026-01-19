@@ -1,6 +1,7 @@
 package com.javanauta.ts.bff.infrastructure.client;
 
-import com.javanauta.ts.bff.business.dto.TaskDTO;
+import com.javanauta.ts.bff.business.dto.in.TaskDTORequest;
+import com.javanauta.ts.bff.business.dto.out.TaskDTOResponse;
 import com.javanauta.ts.bff.business.enums.NotificationStatusEnum;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,20 +14,20 @@ import java.util.List;
 public interface TaskClient {
 
     @PostMapping
-    TaskDTO saveTask(@RequestBody TaskDTO taskDTO, @RequestHeader("Authorization") String token);
+    TaskDTOResponse saveTask(@RequestBody TaskDTORequest taskDTORequest, @RequestHeader("Authorization") String token);
 
     @GetMapping("/events")
-    List<TaskDTO> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finalDateTime, @RequestHeader("Authorization") String token);
+    List<TaskDTOResponse> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finalDateTime, @RequestHeader("Authorization") String token);
 
     @GetMapping
-    List<TaskDTO> findTaskListByUserEmail(@RequestHeader("Authorization") String token);
+    List<TaskDTOResponse> findTaskListByUserEmail(@RequestHeader("Authorization") String token);
 
     @DeleteMapping
     void deleteTaskById(@RequestParam("id") String id, @RequestHeader("Authorization") String token);
 
     @PatchMapping
-    TaskDTO modifyTaskStatusById(@RequestParam("status") NotificationStatusEnum notificationStatusEnum, @RequestParam("id") String id, @RequestHeader("Authorization") String token);
+    TaskDTOResponse modifyTaskStatusById(@RequestParam("status") NotificationStatusEnum notificationStatusEnum, @RequestParam("id") String id, @RequestHeader("Authorization") String token);
 
     @PutMapping
-    TaskDTO updateTaskById(@RequestBody TaskDTO taskDTO, @RequestParam("id") String id, @RequestHeader("Authorization") String token);
+    TaskDTOResponse updateTaskById(@RequestBody TaskDTORequest taskDTORequest, @RequestParam("id") String id, @RequestHeader("Authorization") String token);
 }

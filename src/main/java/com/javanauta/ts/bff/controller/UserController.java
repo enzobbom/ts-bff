@@ -1,9 +1,13 @@
 package com.javanauta.ts.bff.controller;
 
 import com.javanauta.ts.bff.business.UserService;
-import com.javanauta.ts.bff.business.dto.AddressDTO;
-import com.javanauta.ts.bff.business.dto.PhoneDTO;
-import com.javanauta.ts.bff.business.dto.UserDTO;
+import com.javanauta.ts.bff.business.dto.in.AddressDTORequest;
+import com.javanauta.ts.bff.business.dto.in.PhoneDTORequest;
+import com.javanauta.ts.bff.business.dto.in.UserDTORequest;
+import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
+import com.javanauta.ts.bff.business.dto.out.AddressDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.PhoneDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import com.javanauta.ts.bff.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,8 +31,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "400", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.saveUser(userDTO));
+    public ResponseEntity<UserDTOResponse> saveUser(@RequestBody UserDTORequest userDTORequest) {
+        return ResponseEntity.ok(userService.saveUser(userDTORequest));
     }
 
     @PostMapping("/login")
@@ -36,8 +40,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully logged in")
     @ApiResponse(responseCode = "401", description = "Invalid credentials")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public String login(@RequestBody UserDTO userDTO) {
-        return userService.loginUser(userDTO);
+    public String login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+        return userService.loginUser(userLoginRequestDTO);
     }
 
     @GetMapping
@@ -45,7 +49,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User data successfully found")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") String email, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<UserDTOResponse> getUserByEmail(@RequestParam("email") String email, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.getUserByEmail(email, token));
     }
 
@@ -64,8 +68,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully updated")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(userService.updateUser(token, userDTO));
+    public ResponseEntity<UserDTOResponse> updateUser(@RequestBody UserDTORequest userDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(userService.updateUser(token, userDTORequest));
     }
 
     @PutMapping("/address")
@@ -73,8 +77,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User's address successfully updated")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(userService.updateAddress(id, addressDTO, token));
+    public ResponseEntity<AddressDTOResponse> updateAddress(@RequestBody AddressDTORequest addressDTORequest, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(userService.updateAddress(id, addressDTORequest, token));
     }
 
     @PutMapping("/phone")
@@ -82,8 +86,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User's phone successfully updated")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(userService.updatePhone(id, phoneDTO, token));
+    public ResponseEntity<PhoneDTOResponse> updatePhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(userService.updatePhone(id, phoneDTORequest, token));
     }
 
     @PostMapping("/address")
@@ -91,8 +95,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "New address successfully saved")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AddressDTO> addAddress(@RequestBody AddressDTO addressDTO, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(userService.addAddress(token, addressDTO));
+    public ResponseEntity<AddressDTOResponse> addAddress(@RequestBody AddressDTORequest addressDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(userService.addAddress(token, addressDTORequest));
     }
 
     @PostMapping("/phone")
@@ -100,7 +104,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "New phone successfully saved")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(userService.addPhone(token, phoneDTO));
+    public ResponseEntity<PhoneDTOResponse> addPhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
+        return ResponseEntity.ok(userService.addPhone(token, phoneDTORequest));
     }
 }

@@ -1,4 +1,4 @@
-package com.javanauta.ts.bff.business.dto;
+package com.javanauta.ts.bff.business.dto.out;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.javanauta.ts.bff.business.enums.NotificationStatusEnum;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TaskDTO {
+public class TaskDTOResponse {
 
     private String id;
     private String name;
