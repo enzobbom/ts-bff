@@ -4,7 +4,6 @@ import com.javanauta.ts.bff.business.dto.AddressDTO;
 import com.javanauta.ts.bff.business.dto.PhoneDTO;
 import com.javanauta.ts.bff.business.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "user", url = "${user.url}")

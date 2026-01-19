@@ -4,8 +4,10 @@ import com.javanauta.ts.bff.business.UserService;
 import com.javanauta.ts.bff.business.dto.AddressDTO;
 import com.javanauta.ts.bff.business.dto.PhoneDTO;
 import com.javanauta.ts.bff.business.dto.UserDTO;
+import com.javanauta.ts.bff.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-@Tag(name = "user", description = "User creation and login")
+@Tag(name = "user", description = "Creation, login, update and deletion of Users")
+@SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping
-    @Operation(summary = "Save user", description = "Saves a new user")
-    @ApiResponse(responseCode = "200", description = "User successfully saved")
+    @Operation(summary = "Create user", description = "Creates a new user")
+    @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "400", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
@@ -42,7 +45,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User data successfully found")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") String email, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") String email, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.getUserByEmail(email, token));
     }
 
@@ -51,7 +54,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully deleted")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email, @RequestHeader(name = "Authorization", required = false) String token) {
         userService.deleteUserByEmail(email, token);
         return ResponseEntity.ok().build();
     }
@@ -61,7 +64,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully updated")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.updateUser(token, userDTO));
     }
 
@@ -70,7 +73,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User's address successfully updated")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.updateAddress(id, addressDTO, token));
     }
 
@@ -79,7 +82,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User's phone successfully updated")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.updatePhone(id, phoneDTO, token));
     }
 
@@ -88,7 +91,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "New address successfully saved")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<AddressDTO> addAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<AddressDTO> addAddress(@RequestBody AddressDTO addressDTO, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.addAddress(token, addressDTO));
     }
 
@@ -97,7 +100,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "New phone successfully saved")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.addPhone(token, phoneDTO));
     }
 }
