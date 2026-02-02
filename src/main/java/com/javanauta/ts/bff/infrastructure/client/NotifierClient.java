@@ -4,7 +4,7 @@ import com.javanauta.ts.bff.business.dto.out.TaskDTOResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "notifier", url = "${notifier.url}")
+@FeignClient(name = "notifier", url = "${ts.notifier.service.uri}")
 public interface NotifierClient {
 
     @PostMapping
