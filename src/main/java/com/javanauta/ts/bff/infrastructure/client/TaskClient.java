@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@FeignClient(name = "task-scheduler", url = "${task.url}")
+@FeignClient(name = "task-scheduler", url = "${ts.task.service.uri}")
 public interface TaskClient {
 
     @PostMapping

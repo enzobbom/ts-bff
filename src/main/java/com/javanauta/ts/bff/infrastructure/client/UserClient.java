@@ -10,7 +10,7 @@ import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "user", url = "${user.url}")
+@FeignClient(name = "user", url = "${ts.user.service.uri}")
 public interface UserClient {
 
     @PostMapping

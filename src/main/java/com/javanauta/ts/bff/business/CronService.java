@@ -4,7 +4,6 @@ import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
 import com.javanauta.ts.bff.business.dto.out.TaskDTOResponse;
 import com.javanauta.ts.bff.business.enums.NotificationStatusEnum;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,17 +16,17 @@ import java.util.List;
 //@Slf4j
 public class CronService {
 
-    @Value("${cron_user.email}")
+    @Value("${ts.cron.user.email}")
     private String email;
 
-    @Value("${cron_user.password}")
+    @Value("${ts.cron.user.password}")
     private String password;
 
     private final UserService userService;
     private final TaskService taskService;
     private final NotifierService notifierService;
 
-    @Scheduled(cron = "${cron.frequency_spec}")
+    @Scheduled(cron = "${ts.cron.frequency}")
     public void findTasksInNextNotificationPeriod(){
         long notificationPeriod = 1L; // in hours - currently hard coded but meant to be an user setting later
         String token = loginCronUser(createUserLoginRequestDTO());
