@@ -7,7 +7,7 @@ import com.javanauta.ts.bff.infrastructure.client.TaskClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -20,7 +20,7 @@ public class TaskService {
         return taskClient.saveTask(taskDTORequest, token);
     }
 
-    public List<TaskDTOResponse> findTaskByTimePeriod(LocalDateTime initialDateTime, LocalDateTime finalDateTime, String token) {
+    public List<TaskDTOResponse> findTaskByTimePeriod(Instant initialDateTime, Instant finalDateTime, String token) {
         return taskClient.findTaskListByPeriod(initialDateTime, finalDateTime, token);
     }
 

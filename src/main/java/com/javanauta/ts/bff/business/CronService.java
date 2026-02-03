@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -31,9 +32,9 @@ public class CronService {
         long notificationPeriod = 1L; // in hours - currently hard coded but meant to be an user setting later
         String token = loginCronUser(createUserLoginRequestDTO());
 
-        LocalDateTime nowTime = LocalDateTime.now();
+        Instant nowTime = Instant.now();
 
-        List<TaskDTOResponse> tasksList = taskService.findTaskByTimePeriod(nowTime, nowTime.plusHours(notificationPeriod), token);
+        List<TaskDTOResponse> tasksList = taskService.findTaskByTimePeriod(nowTime, nowTime.plus(notificationPeriod, ChronoUnit.HOURS), token);
 
         tasksList.forEach(
                 task -> {
