@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Tasks successfully found")
     @ApiResponse(responseCode = "401", description = "Unauthorized user")
     @ApiResponse(responseCode = "500", description = "Server error")
-    public ResponseEntity<List<TaskDTOResponse>> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finalDateTime, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<List<TaskDTOResponse>> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant finalDateTime, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.findTaskByTimePeriod(initialDateTime, finalDateTime, token));
     }
 
