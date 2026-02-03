@@ -30,6 +30,7 @@ public class TaskController {
     @PostMapping
     @Operation(summary = "Create task", description = "Creates a new task")
     @ApiResponse(responseCode = "200", description = "Task successfully created")
+    @ApiResponse(responseCode = "400", description = "Invalid time zone ID")
     @ApiResponse(responseCode = "401", description = "Unauthorized user")
     @ApiResponse(responseCode = "500", description = "Server error")
     public ResponseEntity<TaskDTOResponse> saveTask(@RequestBody TaskDTORequest taskDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
@@ -79,6 +80,7 @@ public class TaskController {
     @PutMapping
     @Operation(summary = "Update task", description = "Update the data of a task identified by its ID")
     @ApiResponse(responseCode = "200", description = "Task successfully updated")
+    @ApiResponse(responseCode = "400", description = "Invalid time zone ID")
     @ApiResponse(responseCode = "401", description = "Unauthorized user")
     @ApiResponse(responseCode = "404", description = "Task not found")
     @ApiResponse(responseCode = "500", description = "Server error")

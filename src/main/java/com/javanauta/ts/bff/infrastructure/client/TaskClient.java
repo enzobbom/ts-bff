@@ -17,7 +17,7 @@ public interface TaskClient {
     TaskDTOResponse saveTask(@RequestBody TaskDTORequest taskDTORequest, @RequestHeader("Authorization") String token);
 
     @GetMapping("/events")
-    List<TaskDTOResponse> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant finalDateTime, @RequestHeader("Authorization") String token);
+    List<TaskDTOResponse> findTaskListByPeriod(@RequestParam Instant initialDateTime, @RequestParam Instant finalDateTime, @RequestHeader("Authorization") String token);
 
     @GetMapping
     List<TaskDTOResponse> findTaskListByUserEmail(@RequestHeader("Authorization") String token);

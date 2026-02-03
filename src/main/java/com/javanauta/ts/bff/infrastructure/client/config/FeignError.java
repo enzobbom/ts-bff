@@ -6,12 +6,14 @@ import com.javanauta.ts.bff.infrastructure.exception.ResourceNotFoundException;
 import com.javanauta.ts.bff.infrastructure.exception.UnauthorizedException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
+import org.apache.coyote.BadRequestException;
 
 public class FeignError implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
         return switch (response.status()) {
+            case 400 -> new BadRequestException("Error: malformed request");
             case 401 -> new UnauthorizedException("Error: request was not authorized");
             case 404 -> new ResourceNotFoundException("Error: resource not found");
             case 409 -> new ConflictException("Error: attribute already exists");
