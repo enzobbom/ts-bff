@@ -16,7 +16,7 @@ public class TaskDTOResponse {
     private String name;
     private String description;
     private Instant creationDateTime;
-    private Instant dueDateTime;
+    private Instant scheduledDateTime;
     private String userEmail;
     private Instant modificationDateTime;
     private NotificationStatusEnum notificationStatusEnum;

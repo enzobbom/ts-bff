@@ -13,6 +13,6 @@ public class TaskDTORequest {
 
     private String name;
     private String description;
-    private Instant dueDateTime;
+    private Instant scheduledDateTime;
     private String timeZoneId;
 }
