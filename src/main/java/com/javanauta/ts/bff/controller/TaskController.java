@@ -30,9 +30,9 @@ public class TaskController {
     @PostMapping
     @Operation(summary = "Create task", description = "Creates a new task")
     @ApiResponse(responseCode = "200", description = "Task successfully created")
-    @ApiResponse(responseCode = "400", description = "Invalid time zone ID")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
+    @ApiResponse(responseCode = "422", description = "Invalid time zone ID")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<TaskDTOResponse> saveTask(@RequestBody TaskDTORequest taskDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.saveTask(token, taskDTORequest));
     }
@@ -40,8 +40,8 @@ public class TaskController {
     @GetMapping("/events")
     @Operation(summary = "Get tasks by time period", description = "Gets tasks within a specific date and time period")
     @ApiResponse(responseCode = "200", description = "Tasks successfully found")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<List<TaskDTOResponse>> findTaskListByPeriod(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant initialDateTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant finalDateTime, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.findTaskByTimePeriod(initialDateTime, finalDateTime, token));
     }
@@ -49,9 +49,9 @@ public class TaskController {
     @GetMapping
     @Operation(summary = "Get tasks by user email", description = "Gets all tasks of an user identified by their email")
     @ApiResponse(responseCode = "200", description = "Tasks successfully found")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<List<TaskDTOResponse>> findTaskListByUserEmail(@RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.findTaskByUserEmail(token));
     }
@@ -59,9 +59,9 @@ public class TaskController {
     @DeleteMapping
     @Operation(summary = "Delete task", description = "Deletes a task identified by its ID")
     @ApiResponse(responseCode = "200", description = "Task successfully deleted")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Task not found")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<Void> deleteTaskById(@RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token){
         taskService.deleteTaskById(id, token);
         return ResponseEntity.ok().build();
@@ -70,9 +70,9 @@ public class TaskController {
     @PatchMapping
     @Operation(summary = "Modify task status", description = "Modify the status of a task identified by its ID")
     @ApiResponse(responseCode = "200", description = "Task status successfully modified")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Task not found")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<TaskDTOResponse> modifyTaskStatusById(@RequestParam("status") NotificationStatusEnum notificationStatusEnum, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.modifyTaskStatusById(notificationStatusEnum, id, token));
     }
@@ -80,10 +80,10 @@ public class TaskController {
     @PutMapping
     @Operation(summary = "Update task", description = "Update the data of a task identified by its ID")
     @ApiResponse(responseCode = "200", description = "Task successfully updated")
-    @ApiResponse(responseCode = "400", description = "Invalid time zone ID")
-    @ApiResponse(responseCode = "401", description = "Unauthorized user")
+    @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Task not found")
-    @ApiResponse(responseCode = "500", description = "Server error")
+    @ApiResponse(responseCode = "422", description = "Invalid time zone ID")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<TaskDTOResponse> updateTaskById(@RequestBody TaskDTORequest taskDTORequest, @RequestParam("id") String id, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(taskService.updateTaskById(taskDTORequest, id, token));
     }

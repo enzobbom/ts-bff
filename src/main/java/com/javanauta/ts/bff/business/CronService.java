@@ -3,7 +3,11 @@ package com.javanauta.ts.bff.business;
 import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
 import com.javanauta.ts.bff.business.dto.out.TaskDTOResponse;
 import com.javanauta.ts.bff.business.enums.NotificationStatusEnum;
+import feign.Feign;
+import feign.FeignException;
+import feign.RetryableException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-//@Slf4j
+@Slf4j
 public class CronService {
 
     @Value("${ts.cron.user.email}")
@@ -28,20 +32,36 @@ public class CronService {
     private final NotifierService notifierService;
 
     @Scheduled(cron = "${ts.cron.frequency}")
-    public void findTasksInNextNotificationPeriod(){
+    public void findTasksInNextNotificationPeriod() {
         long notificationPeriod = 1L; // in hours - currently hard coded but meant to be an user setting later
-        String token = loginCronUser(createUserLoginRequestDTO());
+        try {
+            String token = loginCronUser(createUserLoginRequestDTO());
 
-        Instant nowTime = Instant.now();
+            Instant nowTime = Instant.now();
+            List<TaskDTOResponse> tasksList = taskService.findTaskByTimePeriod(nowTime, nowTime.plus(notificationPeriod, ChronoUnit.HOURS), token);
 
-        List<TaskDTOResponse> tasksList = taskService.findTaskByTimePeriod(nowTime, nowTime.plus(notificationPeriod, ChronoUnit.HOURS), token);
+            tasksList.forEach(
+                    task -> {
+                        notifierService.sendEmail(task);
+                        taskService.modifyTaskStatusById(NotificationStatusEnum.NOTIFIED, task.getId(), token);
+                    }
+            );
 
-        tasksList.forEach(
-                task -> {
-                    notifierService.sendEmail(task);
-                    taskService.modifyTaskStatusById(NotificationStatusEnum.NOTIFIED, task.getId(), token);
-                }
-        );
+            if (!tasksList.isEmpty()) {
+                log.info("{} tasks successfully notified by email", tasksList.size());
+            }
+
+        } catch (RetryableException e) {
+            // Handle network issues or retriable errors
+            log.error("Network problem during Feign call: {}", e.getMessage());
+
+        } catch (FeignException e) {
+            // Handle HTTP status errors (4xx or 5xx) - will be logged in the FeignError.decode()
+
+        } catch (Exception e) {
+            // Catches any other types of errors/bugs
+            log.error("Unexpected error during Feign call: {}", e.getMessage());
+        }
     }
 
     public String loginCronUser(UserLoginRequestDTO userLoginRequestDTO) {
