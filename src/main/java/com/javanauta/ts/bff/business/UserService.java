@@ -21,8 +21,8 @@ public class UserService {
         return userClient.saveUser(userDTORequest);
     }
 
-    public String loginUser(UserLoginRequestDTO userLoginRequestDTODTORequest) {
-        return userClient.login(userLoginRequestDTODTORequest);
+    public String loginUser(UserLoginRequestDTO userLoginRequestDTO) {
+        return userClient.login(userLoginRequestDTO);
     }
 
     public UserDTOResponse getUserByEmail(String email, String token) {
