@@ -5,6 +5,7 @@ import com.javanauta.ts.bff.business.dto.in.PhoneDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
 import com.javanauta.ts.bff.business.dto.out.AddressDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.CepDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.PhoneDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import com.javanauta.ts.bff.infrastructure.client.UserClient;
@@ -21,8 +22,8 @@ public class UserService {
         return userClient.saveUser(userDTORequest);
     }
 
-    public String loginUser(UserLoginRequestDTO userLoginRequestDTODTORequest) {
-        return userClient.login(userLoginRequestDTODTORequest);
+    public String loginUser(UserLoginRequestDTO userLoginRequestDTO) {
+        return userClient.login(userLoginRequestDTO);
     }
 
     public UserDTOResponse getUserByEmail(String email, String token) {
@@ -51,5 +52,9 @@ public class UserService {
 
     public PhoneDTOResponse addPhone(String token, PhoneDTORequest phoneDTORequest) {
         return userClient.addPhone(phoneDTORequest, token);
+    }
+
+    public CepDTOResponse getCEPDetails(String cep) {
+        return userClient.getCEPDetails(cep);
     }
 }

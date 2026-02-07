@@ -1,6 +1,7 @@
 package com.javanauta.ts.bff.infrastructure.client.config;
 
 import com.javanauta.ts.bff.infrastructure.exception.*;
+import com.javanauta.ts.bff.infrastructure.exception.IllegalArgumentException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class FeignError implements ErrorDecoder {
         }
 
         return switch (response.status()) {
-            case 400 -> new BadRequestException(errMsg != null ? errMsg : "Malformed request");
+            case 400 -> new IllegalArgumentException(errMsg != null ? errMsg : "Request has invalid arguments");
             case 401 -> new UnauthorizedException(errMsg != null ? errMsg : "Request not authorized");
             case 404 -> new ResourceNotFoundException(errMsg != null ? errMsg : "Resource not found");
             case 409 -> new ConflictException(errMsg != null ? errMsg : "Attribute already exists");

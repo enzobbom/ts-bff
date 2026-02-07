@@ -1,4 +1,4 @@
-package com.javanauta.ts.bff.business.dto.in;
+package com.javanauta.ts.bff.business.dto.out;
 
 import lombok.*;
 
@@ -7,11 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddressDTORequest {
+public class CepDTOResponse {
 
     private String street;
-    private Long number;
-    private String complement;
     private String city;
     private String neighbourhood;
     private String state;
