@@ -1,6 +1,7 @@
 package com.javanauta.ts.bff.controller;
 
 import com.javanauta.ts.bff.infrastructure.exception.ConflictException;
+import com.javanauta.ts.bff.infrastructure.exception.IllegalArgumentException;
 import com.javanauta.ts.bff.infrastructure.exception.ResourceNotFoundException;
 import com.javanauta.ts.bff.infrastructure.exception.UnauthorizedException;
 import com.javanauta.ts.bff.infrastructure.exception.ValidationErrorException;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handlerBadRequestException(BadRequestException ex) {
-        log.warn("Bad request exception: {}", ex.getMessage());
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handlerBadRequestException(IllegalArgumentException ex) {
+        log.warn("Illegal argument exception: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 

@@ -14,6 +14,7 @@ public class AddressDTOResponse {
     private Long number;
     private String complement;
     private String city;
+    private String neighbourhood;
     private String state;
-    private String zipCode;
+    private String cep;
 }

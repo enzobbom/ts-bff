@@ -6,6 +6,7 @@ import com.javanauta.ts.bff.business.dto.in.PhoneDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
 import com.javanauta.ts.bff.business.dto.out.AddressDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.CepDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.PhoneDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import com.javanauta.ts.bff.infrastructure.security.SecurityConfig;
@@ -114,4 +115,15 @@ public class UserController {
     public ResponseEntity<PhoneDTOResponse> addPhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestHeader(name = "Authorization", required = false) String token) {
         return ResponseEntity.ok(userService.addPhone(token, phoneDTORequest));
     }
+
+    @GetMapping("/address/{cep}")
+    @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
+    @ApiResponse(responseCode = "200", description = "CEP details successfully found")
+    @ApiResponse(responseCode = "400", description = "CEP with invalid format")
+    @ApiResponse(responseCode = "404", description = "CEP not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<CepDTOResponse> getCEPDetails(@PathVariable("cep") String cep) {
+        return ResponseEntity.ok(userService.getCEPDetails(cep));
+    }
+
 }
