@@ -5,6 +5,7 @@ import com.javanauta.ts.bff.business.dto.in.PhoneDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserDTORequest;
 import com.javanauta.ts.bff.business.dto.in.UserLoginRequestDTO;
 import com.javanauta.ts.bff.business.dto.out.AddressDTOResponse;
+import com.javanauta.ts.bff.business.dto.out.CepDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.PhoneDTOResponse;
 import com.javanauta.ts.bff.business.dto.out.UserDTOResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -39,4 +40,7 @@ public interface UserClient {
 
     @PostMapping("/phone")
     PhoneDTOResponse addPhone(@RequestBody PhoneDTORequest phoneDTORequest, @RequestHeader("Authorization") String token);
+
+    @GetMapping("/address/{cep}")
+    CepDTOResponse getCEPDetails(@PathVariable("cep") String cep);
 }
