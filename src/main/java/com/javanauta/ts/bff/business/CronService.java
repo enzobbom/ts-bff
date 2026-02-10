@@ -52,15 +52,9 @@ public class CronService {
             }
 
         } catch (RetryableException e) {
-            // Handle network issues or retriable errors
+            // Handle network issues or retriable errors. HTTP 4xx/5xx responses will be decoded by FeignError
+            // and fired as local domain exceptions
             log.error("Network problem during Feign call: {}", e.getMessage());
-
-        } catch (FeignException e) {
-            // Handle HTTP status errors (4xx or 5xx) - will be logged in the FeignError.decode()
-
-        } catch (Exception e) {
-            // Catches any other types of errors/bugs
-            log.error("Unexpected error during Feign call: {}", e.getMessage());
         }
     }
 
